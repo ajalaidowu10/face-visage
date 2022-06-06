@@ -9,7 +9,7 @@ import ParticlesContainer from './components/ParticlesContainer/ParticlesContain
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 
 const clarifaiApp = new Clarifai.App({
-  apiKey: 'e0f12568f00c41479e49c9e6795a0546'
+  apiKey: ''
 });
 
 class App extends Component{
