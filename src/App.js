@@ -1,25 +1,59 @@
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
+import Clarifai from 'clarifai';
+import Navigation from './components/Navigation/Navigation';
+import Logo from './components/Logo/Logo';
+import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
+import Rank from './components/Rank/Rank';
+import ParticlesContainer from './components/ParticlesContainer/ParticlesContainer';
+import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const clarifaiApp = new Clarifai.App({
+  apiKey: 'e0f12568f00c41479e49c9e6795a0546'
+});
+
+class App extends Component{
+  constructor(){
+    super();
+    this.state ={
+      input: '',
+      imgUrl: '',
+    }
+  }
+  onInputChange = (event) => {
+    this.setState({ input: event.target.value });
+    console.log(event.target.value);
+  }
+  onButtonSubmit = () => {
+    this.setState({ imgUrl: this.state.input });
+    console.log('Submited');
+    clarifaiApp.models.predict(
+      Clarifai.FACE_DETECT_MODEL, 
+      this.state.input
+      ).then(
+        function(response){
+          //do something with reponse
+          console.log(response.outputs[0].data.regions[0].region_info);
+        },
+        function(error){
+          console.log('erooo');
+          //there was an error
+        }
+    )
+  }
+  render(){
+    return(
+      <div className="App">
+        <ParticlesContainer />
+        <Navigation/>
+        <Logo/>
+        <Rank/>
+        <ImageLinkForm inputChange={ this.onInputChange } buttonSubmit={ this.onButtonSubmit }/>
+        <FaceRecognition imgUrl={ this.state.imgUrl }/>
+      </div>
+
+    );
+  }
 }
 
 export default App;
