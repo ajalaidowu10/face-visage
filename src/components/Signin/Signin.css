@@ -1,0 +1,58 @@
+.form-control:focus{
+    color: #dc3545;
+    background-color: #fff;
+    border-color: #dc3545;
+    box-shadow: none;
+}
+#signin .user_card {
+    height: 300px;
+    width: 300px;
+    margin-top: auto;
+    margin-bottom: auto;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 30px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 5px;
+
+}
+#signin .brand_logo_container {
+    position: absolute;
+    height: 170px;
+    width: 170px;
+    top: -60px;
+    background: none;
+    padding: 10px;
+    text-align: center;
+}
+#signin .brand_logo {
+    height: 100px;
+    width: 100px;
+}
+#signin .form_container {
+    margin-top: 100px;
+}
+#signin .login_btn {
+    width: 100%;
+    background: #c0392b !important;
+    color: white !important;
+}
+#signin .login_btn:focus {
+    box-shadow: none !important;
+    outline: 0px !important;
+}
+#signin .input-group-text {
+    background: #c0392b !important;
+    color: white !important;
+    border: 0 !important;
+    border-radius: 0.25rem 0 0 0.25rem !important;
+}
+#signin .input_user,
+#signin .input_pass:focus {
+    box-shadow: none !important;
+    outline: 0px !important;
+}

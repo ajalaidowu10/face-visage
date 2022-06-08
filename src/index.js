@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import 'bootstrap/dist/css/bootstrap.css';
+import './fontawesome.js';
 import './index.css';
 import App from './App';
-import 'bootstrap/dist/css/bootstrap.css';
 // import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(<App />, document.getElementById('root'));

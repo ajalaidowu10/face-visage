@@ -1,11 +1,12 @@
 #image-link-form .input-group:hover{
-    color: #dc3545;
+    color: black;
     background-color: #fff;
     border-color: #dc3545;
     box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, .5);
 }
 
 #image-link-form .form-control, #image-link-form .form-control:focus{
+    color: black;
     border-color: #dc3545;
     box-shadow: none;
 
