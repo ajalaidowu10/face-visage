@@ -58,6 +58,7 @@ class App extends Component{
   onRouteChange = (route) => {
     if (route === 'signout') {
       this.setState({isSignedIn: false});
+      route = 'signin';
     }else if(route === 'home'){
       this.setState({isSignedIn: true});
     }
@@ -77,7 +78,7 @@ class App extends Component{
           <ImageLinkForm onInputChange={ this.onInputChange } onButtonSubmit={ this.onButtonSubmit }/>
           <FaceRecognition imgUrl={ imgUrl } faceCapture={ faceCapture }/>
         </div>
-        : (route === 'signin'
+        : ( route === 'signin'
 
           ? <Signin onRouteChange={ this.onRouteChange }/>
           : <Signup onRouteChange={ this.onRouteChange }/>

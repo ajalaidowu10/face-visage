@@ -22,7 +22,7 @@ const Signin = ({ onRouteChange }) => {
 								</div>
 								<div className="input-group mb-3">
 									<span className="input-group-text bg-danger">
-										<FontAwesomeIcon icon={['fas', 'envelop']} />
+										<FontAwesomeIcon icon={['fas', 'envelope']} />
 									</span>
 									<input type="text" name="" className="form-control input_user" placeholder="email"/>
 								</div>
@@ -32,14 +32,14 @@ const Signin = ({ onRouteChange }) => {
 									</span>
 									<input type="password" name="" className="form-control input_pass" placeholder="password"/>
 								</div>
-								<div className="d-flex justify-content-center mt-3">
+								<div className="d-flex justify-content-center mt-3 mb-5">
 						 		 <button 
 						 		 		type="button" 
 						 		 		name="button" 
 						 		 		className="btn login_btn"
 						 		 		onClick={() => onRouteChange('home')}
 						 		 	>Sign up</button>
-						    </div>
+						     </div>
 							</form>
 						</div>
 					</div>
