@@ -5,7 +5,14 @@ import './ParticlesContainer.css'
 
 const ParticlesContainer = () => {
   const particlesOptions = {
-  	preset: "fire"
+  	preset: "fire",
+    number: {
+          value: 30,
+          density: {
+            enable: true,
+            value_area: 800
+          }
+    }
   }
   const particlesInit = async (main) => {
     // console.log(main);
