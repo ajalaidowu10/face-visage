@@ -9,6 +9,7 @@ import ParticlesContainer from './components/ParticlesContainer/ParticlesContain
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Signin from './components/Signin/Signin';
 import Signup from './components/Signup/Signup';
+const facevisage_api = process.env.REACT_APP_FACE_VISAGE_API;
 
 const clarifaiApp = new Clarifai.App({
   apiKey: process.env.REACT_APP_CLARIFAI_KEY
@@ -23,22 +24,30 @@ class App extends Component{
       faceCapture: {},
       route: 'signin',
       isSignedIn: false,
+      userData: null
     }
   }
 
   onInputChange = (event) => {
     this.setState({ input: event.target.value });
-    console.log(event.target.value);
   }
-  onButtonSubmit = () => {
+  onPictureSubmit = () => {
     this.setState({ imgUrl: this.state.input });
-    console.log('Submited');
     clarifaiApp.models.predict(
       Clarifai.FACE_DETECT_MODEL, 
       this.state.input
-      ).then((res) => this.setState({faceCapture: this.calculateFaceCapture(res)}))
+      ).then((res) => {
+        fetch(`${facevisage_api}/image`, {
+          method: 'put',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({id: this.state.userData.id})
+        })
+        .then(res => res.json())
+        .then(user => this.setState(Object.assign(this.state.userData, {entries: user.data.entries})))
+        this.setState({faceCapture: this.calculateFaceCapture(res)});
+      })
       .catch((err) => {
-        console.log('erooo');
+        console.log('An error occured');
       });
   }
   calculateFaceCapture = (data) => {
@@ -55,17 +64,19 @@ class App extends Component{
     }
     return faceCapture;
   }
-  onRouteChange = (route) => {
+  onRouteChange = (route, data=null) => {
     if (route === 'signout') {
       this.setState({isSignedIn: false});
       route = 'signin';
     }else if(route === 'home'){
       this.setState({isSignedIn: true});
+      this.setState({userData: data});
+
     }
     this.setState({route: route});
   }
   render(){
-    const { imgUrl, isSignedIn, faceCapture, route } = this.state;
+    const { imgUrl, isSignedIn, faceCapture, route, userData } = this.state;
     return(
         <div className="App">
         <ParticlesContainer />
@@ -74,8 +85,8 @@ class App extends Component{
         ? 
         <div>
           <Logo/>
-          <Rank/>
-          <ImageLinkForm onInputChange={ this.onInputChange } onButtonSubmit={ this.onButtonSubmit }/>
+          <Rank userData={ userData }/>
+          <ImageLinkForm onInputChange={ this.onInputChange } onPictureSubmit={ this.onPictureSubmit }/>
           <FaceRecognition imgUrl={ imgUrl } faceCapture={ faceCapture }/>
         </div>
         : ( route === 'signin'

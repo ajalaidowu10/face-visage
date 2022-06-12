@@ -5,7 +5,7 @@
     box-shadow: none;
 }
 #signin .user_card {
-    height: 300px;
+    height: 320px;
     width: 300px;
     margin-top: auto;
     margin-bottom: auto;
@@ -22,8 +22,6 @@
 }
 #signin .brand_logo_container {
     position: absolute;
-    height: 170px;
-    width: 170px;
     top: -60px;
     background: none;
     padding: 10px;
@@ -34,7 +32,7 @@
     width: 100px;
 }
 #signin .form_container {
-    margin-top: 100px;
+    margin-top: 50px;
 }
 #signin .login_btn {
     width: 100%;
