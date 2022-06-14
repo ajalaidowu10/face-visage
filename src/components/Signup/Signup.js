@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Validator from '../Validator/Validator';
 import logoImg from '../Logo/logo.png';
 import '../Signin/Signin.css'
 const facevisage_api = process.env.REACT_APP_FACE_VISAGE_API;
@@ -8,33 +9,35 @@ class Signin extends Component{
 	constructor(){
 		super();
 		this.state = {
-						username: '',
-						email: '',
-						password:'',
+			form: {username: '', email: '', password: ''},
+			errors: {}
 		}
 	}
-	onChangeUsername = (event) => {
-		this.setState({username: event.target.value});
-	}
-	onChangeEmail = (event) => {
-		this.setState({email: event.target.value});
-	}
-	onChangePassword = (event) => {
-		this.setState({password: event.target.value});
+	onChange = (field, event) => {
+		let form = this.state.form;
+		    form[field] = event.target.value;
+		    this.setState({ form });
 	}
 	onSubmitForm = () => {
-		const { username, email, password } = this.state;
-		fetch(`${facevisage_api}/users`, {
-			method: 'post',
-			headers: {'Content-Type': 'application/json'},
-			body: JSON.stringify({username, email, password})
-		})
-		.then(res => res.json())
-		.then(user => {
-			if (user.status === 200) {
-				this.props.onRouteChange('home', user.data);
-			}
-		})
+		let validator = Validator(this.state.form);
+		if(validator.formIsValid){
+			const { username, email, password } = this.state.form;
+			fetch(`${facevisage_api}/users`, {
+				method: 'post',
+				headers: {'Content-Type': 'application/json'},
+				body: JSON.stringify({username, email, password})
+			})
+			.then(res => res.json())
+			.then(user => {
+				if (user.status === 200) {
+					this.props.onRouteChange('home', user.data);
+				}else{
+					this.setState({errors: user.data.errors });
+				}
+			})
+		}else{
+			this.setState({errors: validator.errors });
+		}
 	}
 	render(){
 		return (
@@ -48,23 +51,50 @@ class Signin extends Component{
 							<div className="d-flex justify-content-center form_container">
 								<form>
 									<h5 className="text-danger fw-bold my-3">Sign up</h5>
-									<div className="input-group mb-3">
-										<span className="input-group-text bg-danger">
-											<FontAwesomeIcon icon={['fas', 'user']} />
-										</span>
-										<input type="text" name="username" onChange={this.onChangeUsername} className="form-control input_user" placeholder="username"/>
+									<div className="mb-3">
+										<div className="input-group">
+											<span className="input-group-text bg-danger">
+												<FontAwesomeIcon icon={['fas', 'user']} />
+											</span>
+											<input 
+												type="text" 
+												name="username" 
+												className="form-control input_user" 
+												placeholder="username"
+												onChange={this.onChange.bind(this, 'username')} 
+											/>
+										</div>
+										<div className="text-danger">{this.state.errors["username"]}</div>
 									</div>
-									<div className="input-group mb-3">
-										<span className="input-group-text bg-danger">
-											<FontAwesomeIcon icon={['fas', 'envelope']} />
-										</span>
-										<input type="email" name="email" onChange={this.onChangeEmail} className="form-control input_user" placeholder="email"/>
+									<div className="mb-3">
+										<div className="input-group">
+											<span className="input-group-text bg-danger">
+												<FontAwesomeIcon icon={['fas', 'envelope']} />
+											</span>
+											<input 
+												type="email" 
+												name="email" 
+												className="form-control input_user" 
+												placeholder="email"
+												onChange={this.onChange.bind(this, 'email')}
+											/>
+										</div>
+										<div className="text-danger">{this.state.errors["email"]}</div>
 									</div>
-									<div className="input-group mb-2">
-										<span className="input-group-text bg-danger">
-											<FontAwesomeIcon icon={['fas', 'lock']} />
-										</span>
-										<input type="password" name="password" onChange={this.onChangePassword} className="form-control input_pass" placeholder="password"/>
+									<div className="mb-2">
+										<div className="input-group">
+											<span className="input-group-text bg-danger">
+												<FontAwesomeIcon icon={['fas', 'lock']} />
+											</span>
+											<input 
+												type="password"
+												name="password" 
+												className="form-control input_pass" 
+												placeholder="password"
+												onChange={this.onChange.bind(this, 'password')}
+											/>
+										</div>
+										<div className="text-danger">{this.state.errors["password"]}</div>
 									</div>
 									<div className="d-flex justify-content-center mt-3 mb-5">
 							 		 <button 
