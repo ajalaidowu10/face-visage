@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './App.css';
-import Clarifai from 'clarifai';
 import Navigation from './components/Navigation/Navigation';
 import Logo from './components/Logo/Logo';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
@@ -11,21 +10,19 @@ import Signin from './components/Signin/Signin';
 import Signup from './components/Signup/Signup';
 const facevisage_api = process.env.REACT_APP_FACE_VISAGE_API;
 
-const clarifaiApp = new Clarifai.App({
-  apiKey: process.env.REACT_APP_CLARIFAI_KEY
-});
+const initState = {
+      input: '',
+      imgUrl: '',
+      faceCapture: [],
+      route: 'signin',
+      isSignedIn: false,
+      userData: null
+}
 
 class App extends Component{
   constructor(){
     super();
-    this.state ={
-      input: '',
-      imgUrl: '',
-      faceCapture: {},
-      route: 'signin',
-      isSignedIn: false,
-      userData: null
-    }
+    this.state = initState;
   }
 
   onInputChange = (event) => {
@@ -33,40 +30,47 @@ class App extends Component{
   }
   onPictureSubmit = () => {
     this.setState({ imgUrl: this.state.input });
-    clarifaiApp.models.predict(
-      Clarifai.FACE_DETECT_MODEL, 
-      this.state.input
-      ).then((res) => {
-        fetch(`${facevisage_api}/image`, {
+    fetch(`${facevisage_api}/facevisage/image`, {
+      method: 'post',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({imgUrl: this.state.input})
+    })
+    .then(res => res.json())
+    .then(faceRes => {
+        fetch(`${facevisage_api}/users/entries`, {
           method: 'put',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({id: this.state.userData.id})
         })
         .then(res => res.json())
         .then(user => this.setState(Object.assign(this.state.userData, {entries: user.data.entries})))
-        this.setState({faceCapture: this.calculateFaceCapture(res)});
+        .catch(console.log)
+        this.setState({faceCapture: this.calculateFaceCapture(faceRes.data)});
       })
       .catch((err) => {
-        console.log('An error occured');
+        console.log('An Clarifai error occured');
       });
   }
   calculateFaceCapture = (data) => {
-    const { bottom_row, left_col, right_col, top_row } = data.outputs[0].data.regions[0].region_info.bounding_box;
     const img = document.getElementById('img');
     const imgWidth = Number(img.width);
     const imgHeight = Number(img.height);
-     
-    let faceCapture = {
-      top: top_row * imgHeight,
-      bottom: imgHeight - (bottom_row * imgHeight),
-      left: left_col * imgWidth,
-      right: imgWidth - (right_col * imgWidth)
-    }
+
+    const faceCapture = data.outputs[0].data.regions.map(output => {
+        let { bottom_row, left_col, right_col, top_row } = output.region_info.bounding_box; 
+        return {
+          top: top_row * imgHeight,
+          bottom: imgHeight - (bottom_row * imgHeight),
+          left: left_col * imgWidth,
+          right: imgWidth - (right_col * imgWidth)
+        }
+    });
+    
     return faceCapture;
   }
   onRouteChange = (route, data=null) => {
     if (route === 'signout') {
-      this.setState({isSignedIn: false});
+      this.setState(initState);
       route = 'signin';
     }else if(route === 'home'){
       this.setState({isSignedIn: true});

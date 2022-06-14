@@ -5,7 +5,7 @@
     box-shadow: none;
 }
 #signin .user_card {
-    height: 320px;
+    height: 370px;
     width: 300px;
     margin-top: auto;
     margin-bottom: auto;
@@ -53,4 +53,7 @@
 #signin .input_pass:focus {
     box-shadow: none !important;
     outline: 0px !important;
+}
+.mt-n5{
+    margin-top: -1rem !important;    
 }
