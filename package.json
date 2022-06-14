@@ -8,8 +8,8 @@
     "@fortawesome/react-fontawesome": "^0.1.18",
     "bootstrap": "^5.2.0-beta1",
     "clarifai": "^2.9.1",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
     "react-scripts": "^4.0.3",
     "react-tilt": "^0.1.4",
     "react-tsparticles": "^2.0.6",
@@ -20,12 +20,6 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
   },
   "browserslist": {
     "production": [
