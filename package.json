@@ -13,7 +13,7 @@
     "react-scripts": "^4.0.3",
     "react-tilt": "^0.1.4",
     "react-tsparticles": "^2.0.6",
-    "tsparticles-preset-fire": "^2.0.6",
+    "tsparticles-preset-fire": "^2.0.6"
   },
   "scripts": {
     "start": "react-scripts start",
